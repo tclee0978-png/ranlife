@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>煥然專屬・Ulife AI 變現大師・流量系統</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Noto Sans TC', 'PingFang TC', sans-serif;
+            background: #0d1117;
+            color: #e2e8f0;
+            padding: 24px 16px 60px;
+            min-height: 100vh;
+        }
+        .page { max-width: 1200px; margin: 0 auto; }
+
+        /* ── 頂部 ── */
+        .header { text-align: center; margin-bottom: 28px; }
+        .header-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            padding: 5px 16px;
+            border-radius: 99px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 14px rgba(249,115,22,0.4);
+        }
+        .header h1 {
+            font-size: 26px;
+            font-weight: 900;
+            line-height: 1.4;
+            color: #fff;
+        }
+        .header h1 span {
+            background: linear-gradient(135deg, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p { font-size: 11px; color: #64748b; margin-top: 6px; letter-spacing: 1.5px; }
+
+        /* ── 佈局 ── */
+        .main-layout { display: grid; grid-template-columns: 340px 1fr; gap: 22px; align-items: start; }
+        @media (max-width: 860px) { .main-layout { grid-template-columns: 1fr; } }
+
+        /* ── 左卡 ── */
+        .left-card {
+            background: #161b22;
+            border-radius: 32px;
+            padding: 28px 24px;
+            box-shadow: 0 8px 40px rgba(249,115,22,0.1), 0 2px 8px rgba(0,0,0,0.4);
+            border: 1px solid #21262d;
+            position: relative;
+            overflow: hidden;
+        }
+        .left-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ea580c, #f97316, #fbbf24, #f97316, #ea580c);
+        }
+
+        /* API Key */
+        .api-wrap {
+            background: rgba(249,115,22,0.06);
+            border: 1px solid rgba(249,115,22,0.2);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 22px;
+        }
+        .api-label { font-size: 12px; font-weight: 900; color: #f97316; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .api-row { display: flex; gap: 8px; }
+        .api-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            font-size: 13px;
+            background: #0d1117;
+            color: #e2e8f0;
+            letter-spacing: 2px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .api-input:focus { outline: none; border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.15); }
+        .api-input::placeholder { color: #484f58; font-size: 12px; letter-spacing: 1px; }
+        .eye-btn {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #8b949e;
+            transition: all 0.2s;
+        }
+        .eye-btn:hover { border-color: #f97316; color: #f97316; }
+        .api-hint { font-size: 11px; color: #484f58; margin-top: 7px; line-height: 1.6; }
+        .api-hint a { color: #f97316; font-weight: 700; text-decoration: none; }
+
+        /* 選單 */
+        .menu-header {
+            font-size: 11px;
+            font-weight: 900;
+            color: #f97316;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .menu-header::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(249,115,22,0.4), transparent); }
+
+        .style-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 26px; }
+        .style-btn {
+            width: 100%;
+            padding: 20px 18px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 900;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.28s;
+            text-align: center;
+            border: 1px solid #21262d;
+            line-height: 1.3;
+            letter-spacing: 0.3px;
+        }
+        .style-btn.inactive {
+            background: #21262d;
+            color: #8b949e;
+        }
+        .style-btn.inactive:hover {
+            background: #2d333b;
+            border-color: rgba(249,115,22,0.4);
+            color: #f97316;
+            box-shadow: 0 4px 16px rgba(249,115,22,0.12);
+            transform: translateY(-1px);
+        }
+        .style-btn.active {
+            background: linear-gradient(135deg, #ea580c, #f97316, #fbbf24);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(249,115,22,0.45);
+            transform: translateY(-2px);
+        }
+        .style-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        /* 工具 */
+        .tool-section-label {
+            font-size: 10px;
+            font-weight: 900;
+            color: #484f58;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .tools-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .tool-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 10px 6px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.22s;
+        }
+        .tool-link:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .t-gemini  { background: linear-gradient(135deg,#4285F4,#1a6cf5); box-shadow: 0 3px 10px rgba(66,133,244,0.3); }
+        .t-chatgpt { background: linear-gradient(135deg,#10a37f,#0d8c6b); box-shadow: 0 3px 10px rgba(16,163,127,0.3); }
+        .t-fb      { background: linear-gradient(135deg,#1877f2,#0a5dc2); box-shadow: 0 3px 10px rgba(24,119,242,0.3); }
+        .t-ig      { background: linear-gradient(135deg,#f58529,#dd2a7b,#8134af); box-shadow: 0 3px 10px rgba(221,42,123,0.3); }
+        .t-threads { background: linear-gradient(135deg,#666,#222); box-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+        .tools-hint { font-size: 10.5px; color: #484f58; text-align: center; margin-top: 5px; }
+
+        /* 右側 */
+        .right-area { display: flex; flex-direction: column; gap: 14px; }
+        .status-bar {
+            background: rgba(249,115,22,0.08);
+            border: 1px solid rgba(249,115,22,0.25);
+            border-radius: 14px;
+            padding: 14px 18px;
+            color: #f97316;
+            font-weight: 900;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
+        .cols-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        @media (max-width: 860px) { .cols-grid { grid-template-columns: 1fr; } .tools-row { flex-wrap: wrap; } .tool-link { flex: 1 1 40%; } }
+
+        .col {
+            background: #161b22;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 360px;
+            border: 1px solid #21262d;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .col::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+        .col-fb::before   { background: linear-gradient(90deg, #1877f2, #4285F4); }
+        .col-ig::before   { background: linear-gradient(90deg, #f58529, #dd2a7b, #8134af); }
+        .col-threads::before { background: linear-gradient(90deg, #f97316, #fbbf24); }
+
+        .col-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #21262d;
+            margin-top: 6px;
+        }
+        .col-name { font-weight: 900; font-size: 12px; font-style: italic; }
+        .n-fb      { color: #3b82f6; }
+        .n-ig      { color: #f43f5e; }
+        .n-threads { color: #f97316; }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #30363d;
+            border-radius: 99px;
+            padding: 4px 14px;
+            font-size: 11px;
+            font-weight: 900;
+            color: #8b949e;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: linear-gradient(135deg,#ea580c,#f97316); color: #fff; border-color: transparent; }
+
+        .output-box {
+            flex: 1;
+            background: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 13.5px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            color: #c9d1d9;
+            overflow-y: auto;
+            min-height: 280px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <div class="header">
+        <div class="header-tag">⚡ Ulife AI 變現大師</div>
+        <h1><span>煥然</span> 專屬社群流量系統</h1>
+        <p>9年通訊老闆・AI剪輯師・硬核老爸・Ulife科技創業家</p>
+    </div>
+
+    <div class="main-layout">
+        <div class="left-card">
+
+            <div class="api-wrap">
+                <div class="api-label">🔑 Gemini API Key</div>
+                <div class="api-row">
+                    <input type="password" id="userApiKey" class="api-input" placeholder="AIzaSy...">
+                    <button class="eye-btn" onclick="toggleKey()">👁</button>
+                </div>
+                <div class="api-hint">沒有金鑰？<a href="https://aistudio.google.com/app/apikey" target="_blank">點此免費申請</a>（每天 1,500 次）</div>
+            </div>
+
+            <div class="menu-header">⚡ 流量選單</div>
+            <div class="style-list">
+                <button class="style-btn inactive" id="btn-dad"   onclick="generate('dad')">🎯 硬核老爸・兒子與光</button>
+                <button class="style-btn inactive" id="btn-tech"  onclick="generate('tech')">📱 科技開講・找我買手機</button>
+                <button class="style-btn inactive" id="btn-ai"    onclick="generate('ai')">💡 AI 剪輯・科技變現</button>
+                <button class="style-btn inactive" id="btn-biz"   onclick="generate('biz')">🤝 Ulife 借力・老闆思維</button>
+            </div>
+
+            <div class="tool-section-label">AI 潤飾工具</div>
+            <div class="tools-row" style="margin-bottom:14px;">
+                <a href="https://gemini.google.com/" target="_blank" class="tool-link t-gemini">✦ Gemini</a>
+                <a href="https://chatgpt.com/" target="_blank" class="tool-link t-chatgpt">⚡ ChatGPT</a>
+            </div>
+
+            <div class="tool-section-label">直接發文</div>
+            <div class="tools-row">
+                <a href="https://www.facebook.com/" target="_blank" class="tool-link t-fb">f FB</a>
+                <a href="https://www.instagram.com/" target="_blank" class="tool-link t-ig">📷 IG</a>
+                <a href="https://www.threads.net/" target="_blank" class="tool-link t-threads">@ TH</a>
+            </div>
+            <div class="tools-hint">複製文案 → 點平台 → 貼上發文</div>
+
+        </div>
+
+        <div class="right-area">
+            <div id="statusBar" class="status-bar"></div>
+            <div class="cols-grid">
+                <div class="col col-fb">
+                    <div class="col-head">
+                        <span class="col-name n-fb">FB 硬核格局長文版</span>
+                        <button class="copy-btn" onclick="copyCol('out-fb',this)">複製</button>
+                    </div>
+                    <div id="out-fb" class="output-box">點擊左側按鈕開始生成...</div>
+                </div>
+                <div class="col col-ig">
+                    <div class="col-head">
+                        <span class="col-name n-ig">IG 科技質感版</span>
+                        <button class="copy-btn" onclick="copyCol('out-ig',this)">複製</button>
+                    </div>
+                    <div id="out-ig" class="output-box">點擊左側按鈕開始生成...</div>
+                </div>
+                <div class="col col-threads">
+                    <div class="col-head">
+                        <span class="col-name n-threads">Threads 老闆犀利版</span>
+                        <button class="copy-btn" onclick="copyCol('out-threads',this)">複製</button>
+                    </div>
+                    <div id="out-threads" class="output-box">點擊左側按鈕開始生成...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const PERSONA = `你現在要完全化身為「陳煥然」的專屬社群文案助理。
+
+核心人設背景：
+- 男，39歲，硬核老爸，事業與家庭完美兼顧的爸爸總裁語氣
+- 9年通訊業老闆、現任小米之家顧問：對3C、手機、智慧家庭、科技趨勢瞭若指掌
+- 新加坡樟宜機場免稅店顧問：具備國際級頂尖銷售視野與高質感客情思維
+- Ulife AI 創業/影片剪輯師：行動派老闆思維、正能量大師、精通AI工具與短影音剪輯變現
+- 核心精神：我之所以學AI、拼創業、懂最新科技，就是為了給孩子當榜樣，活出有光的下半場！
+
+核心風格：
+- 數據邏輯派：用數據說話，講求AI科學實務、影片流量變現邏輯，拒絕空談雞湯
+- 幽默實戰派：用最接地氣的白話文講複雜的AI和商業，自嘲、陽光、毫無業務油條味
+- 親切創業家：分享老闆思維、生活質感、激勵思維，全心尋找想一起用AI翻轉人生的夥伴
+
+嚴格禁止：
+- 禁止提及：直銷、賀寶芙、Herbalife、拉人、下線、傳統土味發大財
+- Ulife系統一律包裝為「AI科技創業平台」「短影音變現團隊」「低風險科技老闆思維模式」
+
+平台規則：
+- FB（硬核格局長文版）：情感真摯（談兒子）、邏輯嚴密（談商業/AI），段落分明，含金量極高，展現極強行動派正能量，字數200-380字
+- IG（科技質感版）：自帶流量的高質感短標題，內文俐落，強調高效率科技感與生活美學，引導預約詢問，附5-8個精準hashtag
+- Threads（老闆犀利版）：硬核大叔創業老闆觀點、直白口語互動、犀利自嘲接地氣（如談買手機踩雷、談AI好玩的地方），字數50-80字，極高留言率`;
+
+const PROMPTS = {
+    dad: `觸發主題：硬核老爸・兒子與光
+目標：啟動破萬瀏覽的流量密碼，建立最強人格魅力，吸引女性粉絲崇拜、男性粉絲尊重。
+寫法：分享孩子得獎、成長、或身為父親為兒子感到無比驕傲的真實情感。展現溫暖與高生活質感，隨後不露痕跡延伸出老闆思維—告訴讀者：因為我是父親，所以我更要在39歲這個年紀，瘋狂與AI時代接軌，不被淘汰，成為孩子的榜樣。`,
+
+    tech: `觸發主題：科技開講・找我買手機
+目標：展現9年通訊老闆與小米之家顧問的硬核實力，讓全網想買手機、想搞懂3C的人自動指名找你。
+寫法：以白話文、數據邏輯派視角，拆解最新手機、智慧家庭、或3C科技的隱藏高CP值玩法。從「現代家庭與商務人士如何用科技省時間、提效率」的生活質感切入。結尾帥氣暗示：「科技問題不用爬文，私訊煥然，我幫你挑最對的。」`,
+
+    ai: `觸發主題：AI 剪輯・科技變現
+目標：解決現代人「想開副業卻沒技術、跟不上AI時代、想拍短影音卻不會剪」的痛點。
+寫法：展現Ulife AI影片剪輯師的專業。用最幽默、最白話的方式，教大家如何利用AI降維打擊，把繁複的剪輯與文案變簡單。分享短影音的底層流量邏輯，告訴讀者：這時代不懂AI，就是在透支你的時間成本。文末強力催化：「想拿這份AI短影音變現說明書的，私訊我。」`,
+
+    biz: `觸發主題：Ulife 借力・老闆思維
+目標：精準吸引想找第二收入、想創業、想找靠譜大哥帶路的男性與高產值合夥人。
+寫法：釋放親切創業家與正能量大師的大格局。融合國際免稅店頂尖視野與9年實體通訊行老闆實戰心法，痛快拆解「為什麼你天天加班卻賺不到大錢」的底層財務邏輯。真誠分享自己為什麼在39歲選擇深耕Ulife系統。喊話：「不想再拿時間換死薪水的，過來找我聊聊，哥帶你用AI借力創業。」`
+};
+
+function toggleKey() {
+    const el = document.getElementById('userApiKey');
+    el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+async function generate(type) {
+    const userKey = document.getElementById('userApiKey').value.trim();
+    if (!userKey) { alert('請先輸入您的 Gemini API Key！'); return; }
+
+    document.querySelectorAll('.style-btn').forEach(b => { b.classList.remove('active'); b.classList.add('inactive'); b.disabled = true; });
+    document.getElementById('btn-' + type).classList.add('active');
+    document.getElementById('btn-' + type).classList.remove('inactive');
+
+    const status = document.getElementById('statusBar');
+    const fbOut  = document.getElementById('out-fb');
+    const igOut  = document.getElementById('out-ig');
+    const thOut  = document.getElementById('out-threads');
+
+    status.style.display = 'block';
+    status.innerText = '⚡ 煥然的硬核流量文案極速生成中，請稍候...';
+    fbOut.innerText = '硬核格局長文撰寫中...';
+    igOut.innerText = '科技質感版生成中...';
+    thOut.innerText = '老闆犀利觀點醞釀中...';
+
+    const prompt = `${PERSONA}\n\n${PROMPTS[type]}\n\n請只回傳 JSON 格式，不要任何 Markdown 標記或說明文字：\n{"fb":"完整FB硬核格局長文","ig":"完整IG科技質感文含hashtag","threads":"完整Threads老闆犀利短文"}`;
+
+    try {
+        const res = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${userKey}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            }
+        );
+        const data = await res.json();
+        if (data.error) {
+            if (data.error.code === 429) throw new Error('RATE_LIMIT');
+            if (data.error.code === 400 || data.error.code === 403) throw new Error('KEY_INVALID');
+            throw new Error(data.error.message);
+        }
+        let raw = data.candidates[0].content.parts[0].text;
+        raw = raw.replace(/```json|```/gi, '').trim();
+        const result = JSON.parse(raw);
+        fbOut.innerText = result.fb      || '生成失敗，請再試一次';
+        igOut.innerText = result.ig      || '生成失敗，請再試一次';
+        thOut.innerText = result.threads || '生成失敗，請再試一次';
+        status.style.display = 'none';
+    } catch (err) {
+        console.error(err);
+        status.style.display = 'none';
+        fbOut.innerText = igOut.innerText = thOut.innerText = '❌ 發生錯誤，請再試一次';
+        if (err.message === 'KEY_INVALID') {
+            alert('【金鑰無效】\n請重新去 aistudio.google.com 申請新的 API Key。');
+        } else if (err.message === 'RATE_LIMIT') {
+            alert('【頻率限制】\n請等 60 秒後再按一次。');
+        } else {
+            alert('【錯誤訊息】' + err.message);
+        }
+    } finally {
+        document.querySelectorAll('.style-btn').forEach(b => b.disabled = false);
+    }
+}
+
+function copyCol(id, btn) {
+    const text = document.getElementById(id).innerText;
+    if (!text || text.includes('...') || text.startsWith('❌') || text.startsWith('點擊')) return;
+    navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = '✓ 已複製';
+        setTimeout(() => btn.innerText = orig, 2000);
+    });
+}
+</script>
+</body>
+</html>
